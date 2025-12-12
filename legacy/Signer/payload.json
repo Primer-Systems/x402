@@ -30,7 +30,7 @@
     "maxTimeoutSeconds": 30,
     "asset": "0xfde4C96c8593536E31F229EA8f37b2ADa2699bb2",
     "extra": {
-      "stargateContract": "0x40200001004B5110333e4De8179426971Efd034A",
+      "prismContract": "0x40200001004B5110333e4De8179426971Efd034A",
       "gasLimit": "300000"
     }
   }

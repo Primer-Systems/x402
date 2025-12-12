@@ -9,12 +9,12 @@ import "@openzeppelin/contracts/access/Ownable2Step.sol";
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 
 /**
- * @title Primer_Stargate_v1.0
+ * @title Primer_Prism_v1.0
  * @author Primer Systems
  * @notice Settlement gateway for Primer x402 ERC-20 payments
  * @dev Handles standard ERC-20 tokens that require approval (EIP-3009 tokens are settled directly by the facilitator)
  */
-contract PrimerStargate is Ownable2Step, ReentrancyGuard, Pausable {
+contract PrimerPrism is Ownable2Step, ReentrancyGuard, Pausable {
     using SafeERC20 for IERC20;
     using ECDSA for bytes32;
     
