@@ -2,7 +2,7 @@
 // Version 1.1.0
 // Supports both EIP-3009 and standard ERC-20 tokens
 // Supports Base (base, base-sepolia)
-// https://primersystems.ai
+// https://primer.systems
 
 console.log("=== Primer x402 Signer & Payload Creator ===\n");
 
@@ -10,7 +10,7 @@ require('dotenv').config({ path: 'signer.env' });
 const { ethers } = require('ethers');
 
 // Facilitator API
-const FACILITATOR_API = process.env.FACILITATOR_API || 'https://x402.primersystems.ai';
+const FACILITATOR_API = process.env.FACILITATOR_API || 'https://x402.primer.systems';
 
 // Custom JSON replacer to handle BigInt serialization
 const replacer = (key, value) =>

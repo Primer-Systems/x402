@@ -1,6 +1,6 @@
 // Primer x402
 // JavaScript SDK for x402 payments
-// https://primersystems.ai | https://x402.org
+// https://primer.systems | https://x402.org
 
 // Signer
 const { createSigner, NETWORKS } = require('./signer');

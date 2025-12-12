@@ -1,7 +1,7 @@
 // Primer x402 - Signer
 // Creates a wallet signer for x402 payments
 // Supports both simple private key and viem wallet clients
-// https://primersystems.ai
+// https://primer.systems
 
 const { ethers } = require('ethers');
 const { NETWORKS, createDebugLogger } = require('./utils');

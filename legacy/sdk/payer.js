@@ -1,7 +1,7 @@
 // Primer x402 - Payer Functions
 // Wrap HTTP clients to automatically handle 402 Payment Required responses
 // Supports both ethers and viem signers
-// https://primersystems.ai
+// https://primer.systems
 
 const { ethers } = require('ethers');
 const {

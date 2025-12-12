@@ -1,6 +1,6 @@
 // Primer x402 - Payee Middleware
 // Middleware to charge for API access via x402 payments
-// https://primersystems.ai
+// https://primer.systems
 
 const { ethers } = require('ethers');
 const {

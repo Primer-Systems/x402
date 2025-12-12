@@ -1,5 +1,5 @@
 // Type definitions for @primersystems/x402
-// https://primersystems.ai | https://x402.org
+// https://primer.systems | https://x402.org
 
 // Note: WalletClient type is only available if viem is installed
 // viem is an optional peer dependency for advanced wallet support
@@ -208,5 +208,5 @@ export function x402Next(
 // Constants
 // ============================================
 
-/** Default facilitator URL (https://x402.primersystems.ai) */
+/** Default facilitator URL (https://x402.primer.systems) */
 export const DEFAULT_FACILITATOR: string;

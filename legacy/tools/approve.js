@@ -4,7 +4,7 @@
 // Required for standard ERC-20 tokens (not needed for EIP-3009 tokens)
 // Part of the x402 payment protocol implementation
 // Supports Base (8453, 84532)
-// https://primersystems.ai | https://x402.org
+// https://primer.systems | https://x402.org
 
 const { ethers } = require('ethers');
 const fs = require('fs');
@@ -51,7 +51,7 @@ const NETWORK_NAMES = {
 };
 
 // Facilitator API
-const FACILITATOR_API = process.env.FACILITATOR_API || 'https://x402.primersystems.ai';
+const FACILITATOR_API = process.env.FACILITATOR_API || 'https://x402.primer.systems';
 
 // ============================================
 // HELPER FUNCTIONS

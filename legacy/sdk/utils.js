@@ -1,6 +1,6 @@
 // Primer x402 - Shared Utilities
 // Common functions and constants used across the SDK
-// https://primersystems.ai
+// https://primer.systems
 
 const debug = require('debug');
 
@@ -12,7 +12,7 @@ const debug = require('debug');
 const FACILITATOR_TIMEOUT_MS = 10000;
 
 // Default facilitator URL
-const DEFAULT_FACILITATOR = 'https://x402.primersystems.ai';
+const DEFAULT_FACILITATOR = 'https://x402.primer.systems';
 
 // Network configurations with env var overrides
 const NETWORKS = {
