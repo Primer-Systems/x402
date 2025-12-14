@@ -161,7 +161,7 @@ export interface PayeeOptions {
  *
  * @example
  * app.use(x402Express('0xYourWallet', {
- *   '/api/premium': { amount: '0.001', asset: '0x...', network: 'base' }
+ *   '/api/paywall': { amount: '0.001', asset: '0x...', network: 'base' }
  * }));
  */
 export function x402Express(
@@ -175,7 +175,7 @@ export function x402Express(
  *
  * @example
  * app.use('*', x402Hono('0xYourWallet', {
- *   '/api/premium': { amount: '0.001', asset: '0x...', network: 'base' }
+ *   '/api/paywall': { amount: '0.001', asset: '0x...', network: 'base' }
  * }));
  */
 export function x402Hono(

@@ -103,7 +103,7 @@ async function verifyPayment(payment, requirements, facilitator, timeoutMs = FAC
  * @example
  * const signer = await createSigner('base', privateKey);
  * const fetchWithPay = x402Fetch(fetch, signer, { maxAmount: '0.50' });
- * const response = await fetchWithPay('https://example.com/api/premium');
+ * const response = await fetchWithPay('https://example.com/api/paywall');
  */
 function x402Fetch(fetch, signer, options = {}) {
   if (!options.maxAmount) {
@@ -189,7 +189,7 @@ function x402Fetch(fetch, signer, options = {}) {
  * @example
  * const signer = await createSigner('base', privateKey);
  * const axiosWithPay = x402Axios(axios.create(), signer, { maxAmount: '0.50' });
- * const response = await axiosWithPay.get('https://example.com/api/premium');
+ * const response = await axiosWithPay.get('https://example.com/api/paywall');
  */
 function x402Axios(axiosInstance, signer, options = {}) {
   if (!options.maxAmount) {
