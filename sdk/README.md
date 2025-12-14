@@ -20,11 +20,11 @@ const signer = await createSigner('base', process.env.PRIVATE_KEY);
 
 // Wrap fetch
 const fetch402 = x402Fetch(fetch, signer, { maxAmount: '1.00' });
-const response = await fetch402('https://api.example.com/paywall');
+const response = await fetch402('https://example.com/api/paywall');
 
 // Or wrap axios
 const axios402 = x402Axios(axios.create(), signer, { maxAmount: '1.00' });
-const response = await axios402.get('https://api.example.com/paywall');
+const response = await axios402.get('https://example.com/api/paywall');
 ```
 
 ### Options
@@ -45,7 +45,7 @@ Middleware for Express, Hono, and Next.js:
 const { x402Express } = require('@primersystems/x402');
 
 app.use(x402Express('0xYourAddress', {
-  '/api/premium': {
+  '/api/paywall': {
     amount: '0.01',
     asset: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913',
     network: 'base'
@@ -64,7 +64,7 @@ app.use(x402Express('0xYourAddress', {
 const { x402Hono } = require('@primersystems/x402');
 
 app.use('*', x402Hono('0xYourAddress', {
-  '/api/premium': { amount: '0.01', asset: '0x...', network: 'base' }
+  '/api/paywall': { amount: '0.01', asset: '0x...', network: 'base' }
 }));
 ```
 
@@ -75,7 +75,7 @@ app.use('*', x402Hono('0xYourAddress', {
 import { x402Next } from '@primersystems/x402';
 
 async function handler(req) {
-  return Response.json({ data: 'premium' });
+  return Response.json({ data: 'paywall' });
 }
 
 export const GET = x402Next(handler, {

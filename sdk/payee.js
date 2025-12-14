@@ -116,7 +116,7 @@ async function toAtomicUnits(amount, asset, network) {
  * @example
  * const app = express();
  * app.use(x402Express('0xYourAddress', {
- *   '/api/premium': {
+ *   '/api/paywall': {
  *     amount: '0.01',           // 0.01 tokens (human-readable)
  *     asset: '0x...',     // token on Base
  *     network: 'base'
@@ -196,7 +196,7 @@ function x402Express(payTo, routes, options = {}) {
  * @example
  * const app = new Hono();
  * app.use('*', x402Hono('0xYourAddress', {
- *   '/api/premium': { amount: '0.01', asset: '0x...', network: 'base' }
+ *   '/api/paywall': { amount: '0.01', asset: '0x...', network: 'base' }
  * }));
  */
 function x402Hono(payTo, routes, options = {}) {
@@ -268,11 +268,11 @@ function x402Hono(payTo, routes, options = {}) {
  * @returns {Function} Wrapped handler
  *
  * @example App Router (Next.js 13+)
- * // app/api/premium/route.js
+ * // app/api/paywall/route.js
  * import { x402Next } from '@primersystems/x402';
  *
  * async function handler(req) {
- *   return Response.json({ data: 'premium content' });
+ *   return Response.json({ data: 'paywall content' });
  * }
  *
  * export const GET = x402Next(handler, {
@@ -283,10 +283,10 @@ function x402Hono(payTo, routes, options = {}) {
  * });
  *
  * @example Pages Router (legacy)
- * // pages/api/premium.js
+ * // pages/api/paywall.js
  * export default x402Next(
  *   async (req, res) => {
- *     res.json({ data: 'premium content' });
+ *     res.json({ data: 'paywall content' });
  *   },
  *   { payTo: '0x...', amount: '0.01', asset: '0x...', network: 'base' }
  * );

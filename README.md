@@ -18,7 +18,7 @@ const { createSigner, x402Fetch } = require('@primersystems/x402');
 const signer = await createSigner('base', process.env.PRIVATE_KEY);
 const fetch402 = x402Fetch(fetch, signer, { maxAmount: '1.00' });
 
-const response = await fetch402('https://api.example.com/premium');
+const response = await fetch402('https://example.com/api/paywall');
 ```
 
 ### As a Payee (Server)
@@ -27,7 +27,7 @@ const response = await fetch402('https://api.example.com/premium');
 const { x402Express } = require('@primersystems/x402');
 
 app.use(x402Express('0xYourAddress', {
-  '/api/premium': {
+  '/api/paywall': {
     amount: '0.01',
     asset: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913', // USDC on Base
     network: 'base'
