@@ -88,7 +88,7 @@ export const GET = x402Next(handler, {
 
 ## Token Approval
 
-For standard ERC-20 tokens (not USDC/EURC), approve the PrimerPrism contract first:
+For standard ERC-20 tokens (not USDC/EURC), approve the *Prism* contract first:
 
 ```javascript
 const { createSigner, approveToken } = require('@primersystems/x402');

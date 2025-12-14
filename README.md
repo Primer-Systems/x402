@@ -6,7 +6,7 @@ Implementation of the [x402 payment protocol](https://x402.org) for HTTP 402 pay
 
 - **sdk/** - JavaScript SDK for payers and payees
 - **tools/** - CLI tools for testing and token approval
-- **Contracts/** - PrimerPrism smart contract for ERC-20 settlements
+- **Contracts/** - *Prism* smart contract for ERC-20 settlements
 
 ## Quick Start
 
@@ -45,7 +45,7 @@ app.use(x402Express('0xYourAddress', {
 ## Token Types
 
 - **EIP-3009 tokens** (USDC, EURC): Direct gasless transfers via `transferWithAuthorization`
-- **Standard ERC-20**: Requires approval to PrimerPrism contract, then gasless via signature
+- **Standard ERC-20**: Requires approval to *Prism* contract, then gasless via signature
 
 ## Protocol
 
