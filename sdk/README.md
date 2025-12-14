@@ -20,11 +20,11 @@ const signer = await createSigner('base', process.env.PRIVATE_KEY);
 
 // Wrap fetch
 const fetch402 = x402Fetch(fetch, signer, { maxAmount: '1.00' });
-const response = await fetch402('https://api.example.com/data');
+const response = await fetch402('https://example.com/api/premium');
 
 // Or wrap axios
 const axios402 = x402Axios(axios.create(), signer, { maxAmount: '1.00' });
-const response = await axios402.get('https://api.example.com/data');
+const response = await axios402.get('https://example.com/api/premium');
 ```
 
 ### Options

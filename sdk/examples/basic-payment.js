@@ -19,7 +19,7 @@ async function main() {
     console.error('Missing PRIVATE_KEY environment variable');
     console.error('');
     console.error('Usage:');
-    console.error('  PRIVATE_KEY=0x... NETWORK=base MAX_AMOUNT=0.10 API_URL=https://api.example.com node basic-payment.js');
+    console.error('  PRIVATE_KEY=0x... NETWORK=base MAX_AMOUNT=0.10 API_URL=https://example.com/api/premium node basic-payment.js');
     console.error('');
     console.error('Environment variables:');
     console.error('  PRIVATE_KEY  - Your wallet private key (required)');
@@ -39,7 +39,7 @@ async function main() {
   if (!API_URL) {
     console.error('Missing API_URL environment variable');
     console.error('Specify the paid API endpoint to call.');
-    console.error('Example: API_URL=https://api.example.com/premium');
+    console.error('Example: API_URL=https://example.com/api/premium');
     process.exit(1);
   }
 

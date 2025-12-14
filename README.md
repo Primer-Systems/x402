@@ -18,7 +18,7 @@ const { createSigner, x402Fetch } = require('@primersystems/x402');
 const signer = await createSigner('base', process.env.PRIVATE_KEY);
 const fetch402 = x402Fetch(fetch, signer, { maxAmount: '1.00' });
 
-const response = await fetch402('https://api.example.com/premium');
+const response = await fetch402('https://example.com/api/premium');
 ```
 
 ### As a Payee (Server)
