@@ -144,10 +144,11 @@ function x402Express(payTo, routes, options = {}) {
     const paymentHeader = req.headers['x-payment'];
     if (!paymentHeader) {
       debug('Express: No X-PAYMENT header, returning 402');
-      // Return 402 with payment requirements (x402-compliant format)
+      // Return 402 with payment requirements via PAYMENT-REQUIRED header (x402 spec)
       try {
         const x402Response = await buildPaymentRequirements(payTo, config, req.path);
-        return res.status(402).json(x402Response);
+        const encoded = base64Encode(JSON.stringify(x402Response));
+        return res.status(402).set('PAYMENT-REQUIRED', encoded).end();
       } catch (error) {
         return res.status(500).json({ error: error.message });
       }
@@ -177,7 +178,8 @@ function x402Express(payTo, routes, options = {}) {
       try {
         const x402Response = await buildPaymentRequirements(payTo, config, req.path);
         x402Response.error = error.message;
-        return res.status(402).json(x402Response);
+        const encoded = base64Encode(JSON.stringify(x402Response));
+        return res.status(402).set('PAYMENT-REQUIRED', encoded).end();
       } catch (reqError) {
         return res.status(500).json({ error: reqError.message });
       }
@@ -222,7 +224,11 @@ function x402Hono(payTo, routes, options = {}) {
       debug('Hono: No X-PAYMENT header, returning 402');
       try {
         const x402Response = await buildPaymentRequirements(payTo, config, c.req.path);
-        return c.json(x402Response, 402);
+        const encoded = base64Encode(JSON.stringify(x402Response));
+        return new Response(null, {
+          status: 402,
+          headers: { 'PAYMENT-REQUIRED': encoded }
+        });
       } catch (error) {
         return c.json({ error: error.message }, 500);
       }
@@ -250,7 +256,11 @@ function x402Hono(payTo, routes, options = {}) {
       try {
         const x402Response = await buildPaymentRequirements(payTo, config, c.req.path);
         x402Response.error = error.message;
-        return c.json(x402Response, 402);
+        const encoded = base64Encode(JSON.stringify(x402Response));
+        return new Response(null, {
+          status: 402,
+          headers: { 'PAYMENT-REQUIRED': encoded }
+        });
       } catch (reqError) {
         return c.json({ error: reqError.message }, 500);
       }
@@ -323,7 +333,11 @@ async function handleAppRouter(req, handler, config, facilitator) {
     debug('Next.js App Router: No X-PAYMENT header, returning 402');
     try {
       const x402Response = await buildPaymentRequirements(config.payTo, config, url.pathname);
-      return Response.json(x402Response, { status: 402 });
+      const encoded = base64Encode(JSON.stringify(x402Response));
+      return new Response(null, {
+        status: 402,
+        headers: { 'PAYMENT-REQUIRED': encoded }
+      });
     } catch (error) {
       return Response.json({ error: error.message }, { status: 500 });
     }
@@ -359,7 +373,11 @@ async function handleAppRouter(req, handler, config, facilitator) {
     try {
       const x402Response = await buildPaymentRequirements(config.payTo, config, url.pathname);
       x402Response.error = error.message;
-      return Response.json(x402Response, { status: 402 });
+      const encoded = base64Encode(JSON.stringify(x402Response));
+      return new Response(null, {
+        status: 402,
+        headers: { 'PAYMENT-REQUIRED': encoded }
+      });
     } catch (reqError) {
       return Response.json({ error: reqError.message }, { status: 500 });
     }
@@ -379,7 +397,8 @@ async function handlePagesRouter(req, res, handler, config, facilitator) {
     debug('Next.js Pages Router: No X-PAYMENT header, returning 402');
     try {
       const x402Response = await buildPaymentRequirements(config.payTo, config, req.url);
-      return res.status(402).json(x402Response);
+      const encoded = base64Encode(JSON.stringify(x402Response));
+      return res.status(402).setHeader('PAYMENT-REQUIRED', encoded).end();
     } catch (error) {
       return res.status(500).json({ error: error.message });
     }
@@ -406,7 +425,8 @@ async function handlePagesRouter(req, res, handler, config, facilitator) {
     try {
       const x402Response = await buildPaymentRequirements(config.payTo, config, req.url);
       x402Response.error = error.message;
-      return res.status(402).json(x402Response);
+      const encoded = base64Encode(JSON.stringify(x402Response));
+      return res.status(402).setHeader('PAYMENT-REQUIRED', encoded).end();
     } catch (reqError) {
       return res.status(500).json({ error: reqError.message });
     }
