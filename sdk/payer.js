@@ -10,6 +10,7 @@ const {
   DEFAULT_FACILITATOR,
   FACILITATOR_TIMEOUT_MS,
   base64Encode,
+  base64Decode,
   TOKEN_ABI_ETHERS,
   TOKEN_ABI_VIEM
 } = require('./utils');
@@ -127,8 +128,12 @@ function x402Fetch(fetch, signer, options = {}) {
 
     debug('Got 402 Payment Required');
 
-    // Parse payment requirements from x402 response
-    const paymentRequired = await response.json();
+    // Parse payment requirements from PAYMENT-REQUIRED header (x402 spec)
+    const paymentRequiredHeader = response.headers.get('payment-required');
+    if (!paymentRequiredHeader) {
+      throw new Error('402 response missing PAYMENT-REQUIRED header');
+    }
+    const paymentRequired = JSON.parse(base64Decode(paymentRequiredHeader));
     const requirements = parsePaymentRequirements(paymentRequired);
     debug('Payment requirements: %O', {
       scheme: requirements.scheme,
@@ -209,8 +214,13 @@ function x402Axios(axiosInstance, signer, options = {}) {
 
       debug('Axios got 402 Payment Required for %s', error.config?.url);
 
-      // Parse requirements from x402 response
-      const requirements = parsePaymentRequirements(error.response.data);
+      // Parse requirements from PAYMENT-REQUIRED header (x402 spec)
+      const paymentRequiredHeader = error.response.headers['payment-required'];
+      if (!paymentRequiredHeader) {
+        throw new Error('402 response missing PAYMENT-REQUIRED header');
+      }
+      const paymentRequired = JSON.parse(base64Decode(paymentRequiredHeader));
+      const requirements = parsePaymentRequirements(paymentRequired);
       debug('Payment requirements: %O', {
         scheme: requirements.scheme,
         network: requirements.network,
