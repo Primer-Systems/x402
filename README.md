@@ -1,6 +1,6 @@
 # Primer x402
 
-[![Tests](https://github.com/Primer-Systems/x402-private/actions/workflows/test.yml/badge.svg)](https://github.com/Primer-Systems/x402-private/actions/workflows/test.yml)
+[![Tests](https://github.com/Primer-Systems/x402/actions/workflows/test.yml/badge.svg)](https://github.com/Primer-Systems/x402-private/actions/workflows/test.yml)
 
 Implementation of the [x402 payment protocol](https://x402.org) for HTTP 402 payments on Base.
 
@@ -58,3 +58,4 @@ Uses x402 v1 with the `exact` scheme. Payments are authorized via EIP-712 signat
 ## License
 
 MIT - Primer Systems
+
