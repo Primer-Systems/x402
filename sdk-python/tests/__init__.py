@@ -1,1 +1,1 @@
-# x402_python tests
+# primer_x402 tests

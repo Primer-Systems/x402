@@ -4,16 +4,19 @@
 [![Tests](https://github.com/Primer-Systems/x402/actions/workflows/test.yml/badge.svg)](https://github.com/Primer-Systems/x402/actions/workflows/test.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-JavaScript SDK for x402 HTTP payments.
+**JavaScript SDK for x402 HTTP payments by [Primer](https://primer.systems).**
 
-## Features
+Easily add pay-per-request monetization to your JavaScript/TypeScript APIs using the [x402 protocol](https://x402.org). Accept stablecoin payments (USDC, EURC) or any ERC-20 token with gasless transactions—payers never pay gas fees.
 
-- ✅ **Multi-chain** - Base, Ethereum, Arbitrum, Optimism, Polygon
-- ✅ **Gasless payments** - EIP-712 signatures, payers never pay gas
-- ✅ **Any ERC-20 token** - USDC, EURC, or any token via Prism contract
-- ✅ **Framework support** - Express, Hono, Next.js middleware
-- ✅ **Built-in limits** - Automatic spend caps per request
-- ✅ **Testing utilities** - Mock facilitator for integration tests
+## Why x402?
+
+- **HTTP-native payments** - Uses the standard HTTP 402 Payment Required status code
+- **Gasless for payers** - Payments are authorized via EIP-712 signatures; facilitators handle gas
+- **Stablecoin support** - Native support for USDC/EURC via EIP-3009 `transferWithAuthorization`
+- **Any ERC-20 token** - Support for other tokens via Primer's *Prism* settlement contract
+- **Multi-chain** - Base, Ethereum, Arbitrum, Optimism, Polygon (mainnet + testnet)
+- **Framework integrations** - Express, Hono, Next.js middleware included
+- **Testing utilities** - Mock facilitator for integration testing
 
 ## Installation
 
@@ -99,15 +102,28 @@ export const GET = x402Next(handler, {
 });
 ```
 
-## Token Approval
+## Token Types
 
-For standard ERC-20 tokens (not USDC/EURC), approve the *Prism* contract first:
+### EIP-3009 Tokens (USDC, EURC)
+
+These tokens support gasless transfers natively via `transferWithAuthorization`. The payer signs an authorization, and the facilitator executes the transfer—payer pays zero gas.
+
+### Standard ERC-20 Tokens
+
+For other ERC-20 tokens, Primer's *Prism* contract enables gasless payments:
+
+1. **One-time approval** - Approve the Prism contract to spend your tokens
+2. **Gasless payments** - Sign authorizations; Prism handles the transfers
 
 ```javascript
 const { createSigner, approveToken } = require('@primersystems/x402');
 
 const signer = await createSigner('eip155:8453', process.env.PRIVATE_KEY);
+
+// One-time approval (this transaction requires gas)
 await approveToken(signer, '0xTokenAddress');
+
+// Now you can make gasless payments with this token
 ```
 
 ## Networks
@@ -353,7 +369,14 @@ fixtures.samplePaymentPayload   // Example payment payload structure
 - Support for Base mainnet and Base Sepolia
 - EIP-3009 (USDC/EURC) and standard ERC-20 tokens
 
+## Links
+
+- [x402 Protocol Specification](https://x402.org)
+- [Primer Systems](https://primer.systems)
+- [GitHub Repository](https://github.com/Primer-Systems/x402)
+- [Python SDK](https://pypi.org/project/primer-x402/)
+
 ## License
 
-MIT
+MIT - [Primer Systems](https://primer.systems)
 

@@ -349,7 +349,7 @@ def x402_flask(
 
     Example:
         >>> from flask import Flask
-        >>> from x402_python import x402_flask
+        >>> from primer_x402 import x402_flask
         >>>
         >>> app = Flask(__name__)
         >>>
@@ -479,7 +479,7 @@ def x402_fastapi(
 
     Example:
         >>> from fastapi import FastAPI
-        >>> from x402_python import x402_fastapi
+        >>> from primer_x402 import x402_fastapi
         >>>
         >>> app = FastAPI()
         >>>

@@ -1,10 +1,10 @@
-# Tests for x402_python.signer
+# Tests for primer_x402.signer
 # Run with: pytest tests/
 
 import re
 import pytest
 
-from x402_python import create_signer, Signer, NETWORKS
+from primer_x402 import create_signer, Signer, NETWORKS
 
 
 # Test private key (DO NOT USE IN PRODUCTION - this is a well-known test key)

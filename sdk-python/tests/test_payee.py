@@ -1,4 +1,4 @@
-# Tests for x402_python.payee
+# Tests for primer_x402.payee
 # Run with: pytest tests/test_payee.py -v
 
 import json
@@ -6,7 +6,7 @@ import re
 import pytest
 from unittest.mock import Mock, patch, MagicMock
 
-from x402_python.payee import (
+from primer_x402.payee import (
     RouteConfig,
     CompiledRoute,
     SettlementError,
@@ -23,7 +23,7 @@ from x402_python.payee import (
     _decimals_cache,
     _metadata_cache
 )
-from x402_python.utils import base64_encode, base64_decode
+from primer_x402.utils import base64_encode, base64_decode
 
 
 # ============================================
@@ -80,7 +80,7 @@ class TestSettlementError:
 # ============================================
 
 class TestGetTokenDecimals:
-    @patch('x402_python.payee.Web3')
+    @patch('primer_x402.payee.Web3')
     def test_fetches_and_caches_decimals(self, mock_web3_class):
         _decimals_cache.clear()
 
@@ -116,7 +116,7 @@ class TestGetTokenDecimals:
 
 
 class TestGetTokenMetadata:
-    @patch('x402_python.payee.Web3')
+    @patch('primer_x402.payee.Web3')
     def test_fetches_metadata(self, mock_web3_class):
         _metadata_cache.clear()
 
@@ -137,7 +137,7 @@ class TestGetTokenMetadata:
 
         _metadata_cache.clear()
 
-    @patch('x402_python.payee.Web3')
+    @patch('primer_x402.payee.Web3')
     def test_defaults_on_missing_fields(self, mock_web3_class):
         _metadata_cache.clear()
 
@@ -160,21 +160,21 @@ class TestGetTokenMetadata:
 
 
 class TestToAtomicUnits:
-    @patch('x402_python.payee.get_token_decimals')
+    @patch('primer_x402.payee.get_token_decimals')
     def test_converts_with_6_decimals(self, mock_get_decimals):
         mock_get_decimals.return_value = 6
 
         result = to_atomic_units("1.50", "0xUSDC", "base")
         assert result == "1500000"
 
-    @patch('x402_python.payee.get_token_decimals')
+    @patch('primer_x402.payee.get_token_decimals')
     def test_converts_with_18_decimals(self, mock_get_decimals):
         mock_get_decimals.return_value = 18
 
         result = to_atomic_units("1.0", "0xETH", "base")
         assert result == "1000000000000000000"
 
-    @patch('x402_python.payee.get_token_decimals')
+    @patch('primer_x402.payee.get_token_decimals')
     def test_handles_small_amounts(self, mock_get_decimals):
         mock_get_decimals.return_value = 6
 
@@ -289,8 +289,8 @@ class TestFindMatchingRoute:
 # ============================================
 
 class TestBuildPaymentRequirements:
-    @patch('x402_python.payee.to_atomic_units')
-    @patch('x402_python.payee.get_token_metadata')
+    @patch('primer_x402.payee.to_atomic_units')
+    @patch('primer_x402.payee.get_token_metadata')
     def test_builds_requirements(self, mock_metadata, mock_atomic):
         mock_atomic.return_value = "1000000"
         mock_metadata.return_value = {"name": "USD Coin", "version": "2"}
@@ -322,8 +322,8 @@ class TestBuildPaymentRequirements:
 # ============================================
 
 class TestSettlePayment:
-    @patch('x402_python.payee.to_atomic_units')
-    @patch('x402_python.payee.requests.post')
+    @patch('primer_x402.payee.to_atomic_units')
+    @patch('primer_x402.payee.requests.post')
     def test_sends_settlement_request(self, mock_post, mock_atomic):
         mock_atomic.return_value = "1000000"
 
@@ -343,8 +343,8 @@ class TestSettlePayment:
         call_args = mock_post.call_args
         assert call_args[0][0] == "https://facilitator.test/settle"
 
-    @patch('x402_python.payee.to_atomic_units')
-    @patch('x402_python.payee.requests.post')
+    @patch('primer_x402.payee.to_atomic_units')
+    @patch('primer_x402.payee.requests.post')
     def test_raises_on_failure(self, mock_post, mock_atomic):
         mock_atomic.return_value = "1000000"
 
@@ -360,8 +360,8 @@ class TestSettlePayment:
         with pytest.raises(SettlementError, match="Invalid payment"):
             settle_payment(payment, "0xPAYEE", config, "https://facilitator.test")
 
-    @patch('x402_python.payee.to_atomic_units')
-    @patch('x402_python.payee.requests.post')
+    @patch('primer_x402.payee.to_atomic_units')
+    @patch('primer_x402.payee.requests.post')
     def test_handles_timeout(self, mock_post, mock_atomic):
         mock_atomic.return_value = "1000000"
 
@@ -377,8 +377,8 @@ class TestSettlePayment:
         assert exc.value.code == "FACILITATOR_TIMEOUT"
         assert exc.value.retryable is True
 
-    @patch('x402_python.payee.to_atomic_units')
-    @patch('x402_python.payee.requests.post')
+    @patch('primer_x402.payee.to_atomic_units')
+    @patch('primer_x402.payee.requests.post')
     def test_handles_connection_error(self, mock_post, mock_atomic):
         mock_atomic.return_value = "1000000"
 
@@ -499,8 +499,8 @@ class TestX402Protect:
 # ============================================
 
 class TestPaymentFlow:
-    @patch('x402_python.payee.settle_payment')
-    @patch('x402_python.payee.build_payment_requirements')
+    @patch('primer_x402.payee.settle_payment')
+    @patch('primer_x402.payee.build_payment_requirements')
     def test_payment_header_parsing(self, mock_build, mock_settle):
         """Test that a valid payment header can be parsed and processed."""
         # Create a valid payment header

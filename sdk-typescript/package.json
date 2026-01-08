@@ -1,6 +1,6 @@
 {
   "name": "@primersystems/x402",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "JavaScript SDK for x402 payments - pay and charge for APIs with stablecoins",
   "main": "index.js",
   "types": "index.d.ts",
@@ -29,12 +29,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/PrimerSystems/x402.git",
+    "url": "https://github.com/Primer-Systems/x402.git",
     "directory": "sdk-typescript"
   },
   "homepage": "https://x402.org",
   "bugs": {
-    "url": "https://github.com/PrimerSystems/x402/issues"
+    "url": "https://github.com/Primer-Systems/x402/issues"
   },
   "files": [
     "index.js",

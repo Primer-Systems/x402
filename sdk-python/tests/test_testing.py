@@ -1,4 +1,4 @@
-# Tests for x402_python.testing
+# Tests for primer_x402.testing
 # Run with: pytest tests/
 
 import json
@@ -6,8 +6,8 @@ import time
 import pytest
 import requests
 
-from x402_python.utils import parse_payment_header
-from x402_python.testing import (
+from primer_x402.utils import parse_payment_header
+from primer_x402.testing import (
     create_mock_facilitator,
     create_test_payment,
     create_test_402_response,

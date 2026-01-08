@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "primer-x402"
-version = "0.4.0"
+version = "0.4.1"
 description = "Python SDK for x402 payments - pay and charge for APIs with stablecoins"
 readme = "README.md"
 license = {text = "MIT"}
@@ -74,7 +74,7 @@ Issues = "https://github.com/Primer-Systems/x402/issues"
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["x402_python*"]
+include = ["primer_x402*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
@@ -84,8 +84,8 @@ python_functions = ["test_*"]
 addopts = "-v"
 
 [tool.coverage.run]
-source = ["x402_python"]
-omit = ["tests/*", "x402_python/testing/*"]
+source = ["primer_x402"]
+omit = ["tests/*", "primer_x402/testing/*"]
 
 [tool.coverage.report]
 exclude_lines = [

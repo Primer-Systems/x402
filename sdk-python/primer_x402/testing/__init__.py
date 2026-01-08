@@ -3,7 +3,7 @@
 # https://primer.systems
 #
 # Usage:
-#   from x402_python.testing import (
+#   from primer_x402.testing import (
 #       create_mock_facilitator,
 #       create_test_payment,
 #       create_test_402_response,

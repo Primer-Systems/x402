@@ -1,10 +1,10 @@
-# Tests for x402_python.utils
+# Tests for primer_x402.utils
 # Run with: pytest tests/
 
 import json
 import pytest
 
-from x402_python.utils import (
+from primer_x402.utils import (
     base64_encode,
     base64_decode,
     parse_payment_header,

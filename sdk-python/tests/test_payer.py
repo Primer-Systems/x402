@@ -1,4 +1,4 @@
-# Tests for x402_python.payer
+# Tests for primer_x402.payer
 # Run with: pytest tests/test_payer.py -v
 
 import json
@@ -7,7 +7,7 @@ import pytest
 from unittest.mock import Mock, patch, MagicMock
 from dataclasses import dataclass
 
-from x402_python.payer import (
+from primer_x402.payer import (
     PaymentRequirements,
     PaymentError,
     parse_payment_requirements,
@@ -24,7 +24,7 @@ from x402_python.payer import (
     X402Session,
     _decimals_cache
 )
-from x402_python.utils import base64_encode
+from primer_x402.utils import base64_encode
 
 
 # ============================================
@@ -125,7 +125,7 @@ class TestPaymentError:
 # ============================================
 
 class TestVerifyPayment:
-    @patch('x402_python.payer.requests.post')
+    @patch('primer_x402.payer.requests.post')
     def test_sends_correct_payload(self, mock_post):
         mock_response = Mock()
         mock_response.ok = True
@@ -151,7 +151,7 @@ class TestVerifyPayment:
         assert payload["paymentPayload"] == payment
         assert payload["paymentRequirements"]["network"] == "base"
 
-    @patch('x402_python.payer.requests.post')
+    @patch('primer_x402.payer.requests.post')
     def test_raises_on_failure(self, mock_post):
         mock_response = Mock()
         mock_response.ok = False
@@ -165,7 +165,7 @@ class TestVerifyPayment:
         with pytest.raises(PaymentError, match="Invalid signature"):
             verify_payment(payment, requirements, "https://facilitator.test")
 
-    @patch('x402_python.payer.requests.post')
+    @patch('primer_x402.payer.requests.post')
     def test_handles_timeout(self, mock_post):
         import requests
         mock_post.side_effect = requests.exceptions.Timeout()
@@ -179,7 +179,7 @@ class TestVerifyPayment:
         assert exc.value.code == "FACILITATOR_TIMEOUT"
         assert exc.value.retryable is True
 
-    @patch('x402_python.payer.requests.post')
+    @patch('primer_x402.payer.requests.post')
     def test_handles_connection_error(self, mock_post):
         import requests
         mock_post.side_effect = requests.exceptions.ConnectionError()
@@ -199,7 +199,7 @@ class TestVerifyPayment:
 # ============================================
 
 class TestGetTokenDecimals:
-    @patch('x402_python.payer.Web3')
+    @patch('primer_x402.payer.Web3')
     def test_caches_results(self, mock_web3_class):
         _decimals_cache.clear()
 
@@ -223,7 +223,7 @@ class TestGetTokenDecimals:
 
 
 class TestCheckEip3009:
-    @patch('x402_python.payer.Web3')
+    @patch('primer_x402.payer.Web3')
     def test_returns_true_for_eip3009_token(self, mock_web3_class):
         mock_contract = Mock()
         mock_contract.functions.authorizationState.return_value.call.return_value = False
@@ -235,7 +235,7 @@ class TestCheckEip3009:
         result = check_eip3009(mock_web3, "0xTOKEN", "0xADDRESS")
         assert result is True
 
-    @patch('x402_python.payer.Web3')
+    @patch('primer_x402.payer.Web3')
     def test_returns_false_for_non_eip3009_token(self, mock_web3_class):
         mock_contract = Mock()
         mock_contract.functions.authorizationState.return_value.call.side_effect = Exception("not supported")
@@ -249,8 +249,8 @@ class TestCheckEip3009:
 
 
 class TestGetTokenDetails:
-    @patch('x402_python.payer.Web3')
-    @patch('x402_python.payer.check_eip3009')
+    @patch('primer_x402.payer.Web3')
+    @patch('primer_x402.payer.check_eip3009')
     def test_returns_token_details(self, mock_check_eip3009, mock_web3_class):
         mock_check_eip3009.return_value = True
 
@@ -268,8 +268,8 @@ class TestGetTokenDetails:
         assert result["token_version"] == "2"
         assert result["is_eip3009"] is True
 
-    @patch('x402_python.payer.Web3')
-    @patch('x402_python.payer.check_eip3009')
+    @patch('primer_x402.payer.Web3')
+    @patch('primer_x402.payer.check_eip3009')
     def test_defaults_version_to_1(self, mock_check_eip3009, mock_web3_class):
         mock_check_eip3009.return_value = False
 
@@ -292,7 +292,7 @@ class TestGetTokenDetails:
 # ============================================
 
 class TestFetchPrismAddress:
-    @patch('x402_python.payer.requests.get')
+    @patch('primer_x402.payer.requests.get')
     def test_fetches_prism_address(self, mock_get):
         mock_response = Mock()
         mock_response.ok = True
@@ -304,7 +304,7 @@ class TestFetchPrismAddress:
         result = fetch_prism_address("base", "https://facilitator.test")
         assert result == "0xPRISM"
 
-    @patch('x402_python.payer.requests.get')
+    @patch('primer_x402.payer.requests.get')
     def test_raises_for_unsupported_network(self, mock_get):
         mock_response = Mock()
         mock_response.ok = True
@@ -317,7 +317,7 @@ class TestFetchPrismAddress:
 
 
 class TestCheckAllowance:
-    @patch('x402_python.payer.Web3')
+    @patch('primer_x402.payer.Web3')
     def test_returns_allowance(self, mock_web3_class):
         mock_contract = Mock()
         mock_contract.functions.allowance.return_value.call.return_value = 1000000
@@ -331,7 +331,7 @@ class TestCheckAllowance:
 
 
 class TestGetPrismNonce:
-    @patch('x402_python.payer.Web3')
+    @patch('primer_x402.payer.Web3')
     def test_returns_nonce(self, mock_web3_class):
         mock_contract = Mock()
         mock_contract.functions.getNonce.return_value.call.return_value = 5
@@ -385,7 +385,7 @@ class TestX402Session:
         assert session.should_verify is False
         assert session.timeout == 30.0
 
-    @patch('x402_python.payer.requests.Session.request')
+    @patch('primer_x402.payer.requests.Session.request')
     def test_returns_non_402_responses_directly(self, mock_request):
         mock_response = Mock()
         mock_response.status_code = 200
@@ -397,7 +397,7 @@ class TestX402Session:
         response = session.get("https://example.com")
         assert response.status_code == 200
 
-    @patch('x402_python.payer.requests.Session.request')
+    @patch('primer_x402.payer.requests.Session.request')
     def test_raises_on_missing_payment_required_header(self, mock_request):
         mock_response = Mock()
         mock_response.status_code = 402
@@ -410,7 +410,7 @@ class TestX402Session:
         with pytest.raises(PaymentError, match="missing PAYMENT-REQUIRED header"):
             session.get("https://example.com")
 
-    @patch('x402_python.payer.requests.Session.request')
+    @patch('primer_x402.payer.requests.Session.request')
     def test_raises_on_amount_exceeded(self, mock_request):
         # Create 402 response
         payment_required = {
@@ -473,8 +473,8 @@ class TestX402Requests:
 # ============================================
 
 class TestCreatePayment:
-    @patch('x402_python.payer.Web3')
-    @patch('x402_python.payer.check_eip3009')
+    @patch('primer_x402.payer.Web3')
+    @patch('primer_x402.payer.check_eip3009')
     def test_creates_eip3009_payment(self, mock_check_eip3009, mock_web3_class):
         mock_check_eip3009.return_value = True
         mock_web3_class.to_checksum_address = lambda x: x
@@ -514,11 +514,11 @@ class TestCreatePayment:
         assert result["payload"]["authorization"]["from"] == "0xADDRESS"
         assert result["payload"]["authorization"]["to"] == "0x1111111111111111111111111111111111111111"
 
-    @patch('x402_python.payer.Web3')
-    @patch('x402_python.payer.fetch_prism_address')
-    @patch('x402_python.payer.check_allowance')
-    @patch('x402_python.payer.get_prism_nonce')
-    @patch('x402_python.payer.check_eip3009')
+    @patch('primer_x402.payer.Web3')
+    @patch('primer_x402.payer.fetch_prism_address')
+    @patch('primer_x402.payer.check_allowance')
+    @patch('primer_x402.payer.get_prism_nonce')
+    @patch('primer_x402.payer.check_eip3009')
     def test_creates_erc20_payment(
         self,
         mock_check_eip3009,
@@ -563,10 +563,10 @@ class TestCreatePayment:
         assert result["x402Version"] == 2
         assert result["payload"]["authorization"]["nonce"] == "0"
 
-    @patch('x402_python.payer.Web3')
-    @patch('x402_python.payer.fetch_prism_address')
-    @patch('x402_python.payer.check_allowance')
-    @patch('x402_python.payer.check_eip3009')
+    @patch('primer_x402.payer.Web3')
+    @patch('primer_x402.payer.fetch_prism_address')
+    @patch('primer_x402.payer.check_allowance')
+    @patch('primer_x402.payer.check_eip3009')
     def test_raises_on_insufficient_allowance(
         self,
         mock_check_eip3009,
@@ -613,7 +613,7 @@ class TestCreatePayment:
 # ============================================
 
 class TestHTTPMethods:
-    @patch('x402_python.payer.requests.Session.request')
+    @patch('primer_x402.payer.requests.Session.request')
     def test_get_method(self, mock_request):
         mock_response = Mock()
         mock_response.status_code = 200
@@ -625,7 +625,7 @@ class TestHTTPMethods:
         session.get("https://example.com")
         mock_request.assert_called_with("GET", "https://example.com")
 
-    @patch('x402_python.payer.requests.Session.request')
+    @patch('primer_x402.payer.requests.Session.request')
     def test_post_method(self, mock_request):
         mock_response = Mock()
         mock_response.status_code = 200
@@ -637,7 +637,7 @@ class TestHTTPMethods:
         session.post("https://example.com", json={"data": "test"})
         mock_request.assert_called_with("POST", "https://example.com", json={"data": "test"})
 
-    @patch('x402_python.payer.requests.Session.request')
+    @patch('primer_x402.payer.requests.Session.request')
     def test_put_method(self, mock_request):
         mock_response = Mock()
         mock_response.status_code = 200
@@ -649,7 +649,7 @@ class TestHTTPMethods:
         session.put("https://example.com")
         mock_request.assert_called_with("PUT", "https://example.com")
 
-    @patch('x402_python.payer.requests.Session.request')
+    @patch('primer_x402.payer.requests.Session.request')
     def test_patch_method(self, mock_request):
         mock_response = Mock()
         mock_response.status_code = 200
@@ -661,7 +661,7 @@ class TestHTTPMethods:
         session.patch("https://example.com")
         mock_request.assert_called_with("PATCH", "https://example.com")
 
-    @patch('x402_python.payer.requests.Session.request')
+    @patch('primer_x402.payer.requests.Session.request')
     def test_delete_method(self, mock_request):
         mock_response = Mock()
         mock_response.status_code = 200
